@@ -30,6 +30,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
         panier.push({produit: id, couleur: couleur, quantite: quantite});
         console.table(panier)
         localStorage.setItem("panier", JSON.stringify(panier));
+        console.table(panier)
         // Afficher un message de confirmation à l'utilisateur
         alert("Le produit a été ajouté au panier !");
       } else {
