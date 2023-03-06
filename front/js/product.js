@@ -91,5 +91,3 @@ function afficheProduit (produit) {
 
   affichage.innerHTML = html;
 }
-
-// Créer le stock local
