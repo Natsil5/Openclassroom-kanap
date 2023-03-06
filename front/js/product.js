@@ -28,7 +28,6 @@ fetch(`http://localhost:3000/api/products/${id}`)
         // Ajouter le produit, sa couleur et sa quantité au panier
         let panier = JSON.parse(localStorage.getItem("panier")) || [];
         panier.push({produit: id, couleur: couleur, quantite: quantite});
-        console.table(panier)
         localStorage.setItem("panier", JSON.stringify(panier));
         console.table(panier)
         // Afficher un message de confirmation à l'utilisateur
