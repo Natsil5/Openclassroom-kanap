@@ -14,6 +14,29 @@ fetch(`http://localhost:3000/api/products/${id}`)
     console.log(produit);
     // Appel de la fonction d'affichage
     afficheProduit(produit);
+    
+    // Ajouter un écouteur d'événement "click" sur le bouton "Ajouter au panier"
+    document.getElementById("addToCart").addEventListener("click", () => {
+      // Récupérer la couleur sélectionnée
+      let couleur = document.getElementById("colors").value;
+      console.log(couleur)
+      // Récupérer la quantité entrée par l'utilisateur
+      let quantite = document.getElementById("quantity").value;
+      console.log(quantite)
+      // Vérifier si la couleur et la quantité ont été sélectionnées/entrées
+      if (couleur && quantite) {
+        // Ajouter le produit, sa couleur et sa quantité au panier
+        let panier = JSON.parse(localStorage.getItem("panier")) || [];
+        panier.push({produit: id, couleur: couleur, quantite: quantite});
+        console.table(panier)
+        localStorage.setItem("panier", JSON.stringify(panier));
+        // Afficher un message de confirmation à l'utilisateur
+        alert("Le produit a été ajouté au panier !");
+      } else {
+        // Afficher un message d'erreur à l'utilisateur si la couleur et/ou la quantité n'ont pas été sélectionnées/entrées
+        alert("Veuillez sélectionner une couleur et entrer une quantité valide.");
+      }
+    });
   })
   // Dans le cas d'une erreur.
   .catch((err) => {
