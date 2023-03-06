@@ -25,9 +25,25 @@ fetch(`http://localhost:3000/api/products/${id}`)
       console.log(quantite)
       // Vérifier si la couleur et la quantité ont été sélectionnées/entrées
       if (couleur && quantite) {
+        
+        // créer un identifiant unique du produit-couleur
+        let productKey = id+couleur;
+ 
         // Ajouter le produit, sa couleur et sa quantité au panier
         let panier = JSON.parse(localStorage.getItem("panier")) || [];
-        panier.push({produit: id, couleur: couleur, quantite: quantite});
+        
+        for(let i = 0; i < panier.length; i++) {
+              let currentProduct = panier[i];
+              // si dans le panier j'ai un produit avec la même key
+              if(currentProduct.key == productKey) {
+                  // j'ajoute la quantité à l'existant
+                  currentProduct.quantity += quantity;
+              } else {
+                 // je crée une nouvelle entrée
+                 panier.push({key: productKey, produit: id, couleur: couleur, quantite: quantite});
+              }
+        }
+        
         localStorage.setItem("panier", JSON.stringify(panier));
         console.table(panier)
         // Afficher un message de confirmation à l'utilisateur
