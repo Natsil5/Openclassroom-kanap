@@ -21,29 +21,22 @@ fetch(`http://localhost:3000/api/products/${id}`)
       let couleur = document.getElementById("colors").value;
       console.log(couleur)
       // Récupérer la quantité entrée par l'utilisateur
-      let quantite = document.getElementById("quantity").value;
+      let quantite = parseInt(document.getElementById("quantity").value);
       console.log(quantite)
       // Vérifier si la couleur et la quantité ont été sélectionnées/entrées
       if (couleur && quantite) {
-        
-        // créer un identifiant unique du produit-couleur
-        let productKey = id+couleur;
- 
-        // Ajouter le produit, sa couleur et sa quantité au panier
+        // Récupérer le panier actuel
         let panier = JSON.parse(localStorage.getItem("panier")) || [];
-        
-        for(let i = 0; i < panier.length; i++) {
-              let currentProduct = panier[i];
-              // si dans le panier j'ai un produit avec la même key
-              if(currentProduct.key == productKey) {
-                  // j'ajoute la quantité à l'existant
-                  currentProduct.quantity += quantity;
-              } else {
-                 // je crée une nouvelle entrée
-                 panier.push({key: productKey, produit: id, couleur: couleur, quantite: quantite});
-              }
+        // Vérifier si le produit avec la même couleur est déjà dans le panier
+        let index = panier.findIndex(p => p.produit === id && p.couleur === couleur);
+        if (index !== -1) {
+          // Si le produit est déjà dans le panier, on ajoute simplement la quantité entrée à la quantité déjà présente
+          panier[index].quantite = parseInt(panier[index].quantite) + quantite;
+        } else {
+          // Sinon, on ajoute le produit avec la couleur et la quantité spécifiées
+          panier.push({produit: id, couleur: couleur, quantite: quantite});
         }
-        
+        // Mettre à jour le panier dans le local storage
         localStorage.setItem("panier", JSON.stringify(panier));
         console.table(panier)
         // Afficher un message de confirmation à l'utilisateur
